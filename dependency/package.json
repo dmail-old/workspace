@@ -1,10 +1,7 @@
 {
-  "name": "dependency",
+  "name": "@dmail/dependency",
   "version": "0.0.1",
   "devDependencies": {
-    "common-dependency": "*"
-  },
-  "scripts": {
-    "preinstall": "npm link ../commonDependency"
+    "@dmail/common-dependency": "0.0.1"
   }
 }

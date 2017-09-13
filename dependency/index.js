@@ -1,3 +1,3 @@
-const common = require('common-dependency')
+const common = require('@dmail/common-dependency')
 
 module.exports = `dependency and ${common}`

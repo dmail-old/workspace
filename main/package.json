@@ -2,12 +2,13 @@
   "name": "main",
   "version": "0.0.1",
   "dependencies": {
-    "dependency": "*"
+    "@dmail/dependency": "*"
   },
   "devDependencies": {
-    "common-dependency": "*"
+    "@dmail/common-dependency": "*",
+    "symlink": "*"
   },
   "scripts": {
-    "preinstall": "npm link ../commonDependency && npm link ../dependency"
+    "symlink": "symlink ../ --execute"
   }
 }
