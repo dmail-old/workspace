@@ -1,0 +1,13 @@
+{
+  "name": "main",
+  "version": "0.0.1",
+  "dependencies": {
+    "dependency": "*"
+  },
+  "devDependencies": {
+    "common-dependency": "*"
+  },
+  "scripts": {
+    "preinstall": "npm link ../commonDependency && npm link ../dependency"
+  }
+}
