@@ -8,3 +8,5 @@ Then you do npm run link.
 
 I'll write a script watching for every package files and running npm run compile when a file changes
 
+For code coverage : https://github.com/istanbuljs/nyc
+
