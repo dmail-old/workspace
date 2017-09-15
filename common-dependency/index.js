@@ -1,1 +1,1 @@
-module.exports = 'common'
+export default 'common-modified'

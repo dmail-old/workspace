@@ -1,3 +1,5 @@
-const common = require('@dmail/common-dependency')
+import common from '@dmail/common-dependency'
 
-module.exports = `dependency and ${common}`
+console.log('common', common)
+
+export default `dependency and ${common}`
