@@ -1,17 +1,6 @@
 {
 	"name": "@dmail/npmlink",
 	"version": "0.0.1",
-	"devDependencies": {
-		"eslint": "^3.19.0",
-		"eslint-plugin-import": "^2.7.0",
-		"prettier": "^1.7.0",
-		"babel-core": "^6.17.0",
-		"babel-cli": "^6.26.0",
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-stage-2": "^6.24.1",
-		"symlink": "2.1.0",
-		"chokidar": "^1.7.0"
-	},
 	"scripts": {
 		"link": "symlink ./packages --execute",
 		"code-install-path": "code --install-extension christian-kohler.path-intellisense",
@@ -22,6 +11,15 @@
 		"autocompile": "node ./scripts/runDistOnChange.js"
 	},
 	"dependencies": {
-		"babel-eslint": "^8.0.0"
+		"eslint": "^3.19.0",
+		"eslint-plugin-import": "^2.7.0",
+		"babel-eslint": "^8.0.0",
+		"prettier": "^1.7.0",
+		"babel-core": "^6.17.0",
+		"babel-cli": "^6.26.0",
+		"babel-preset-env": "*",
+		"symlink": "2.1.0",
+		"chokidar": "^1.7.0",
+		"find-nearest-package-json": "^2.0.1"
 	}
 }

@@ -169,7 +169,7 @@ const defaultRules = {
 	"no-spaced-func": 2,
 	"no-trailing-spaces": 2,
 	"no-unneeded-ternary": 2,
-	"object-curly-spacing": [2, "never"],
+	"object-curly-spacing": [2, "always"],
 	"one-var": [2, "never"],
 	"one-var-declaration-per-line": 2,
 	"operator-assignment": [2, "always"],
