@@ -1,11 +1,15 @@
 {
-  "name": "@dmail/common-dependency",
+  "name": "main",
   "version": "0.0.1",
   "main": "dist/index.js",
   "module": "index.js",
+  "dependencies": {
+    "@dmail/dependency": "*"
+  },
   "devDependencies": {
-    "babel-core": "^6.17.0",
+    "@dmail/common-dependency": "*",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1"
   },
