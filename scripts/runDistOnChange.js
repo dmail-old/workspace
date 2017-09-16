@@ -2,9 +2,9 @@ const path = require("path")
 const chokidar = require("chokidar")
 const fs = require("fs")
 const { findNearestPackageJsonSync } = require("find-nearest-package-json")
-const { execCommand } = require("./util/execCommand.js")
+const { execCommand, getPackagesFolder } = require("./util/execCommand.js")
 
-const rootDirectory = path.resolve(__dirname, "../packages").replace(/\\/g, "/")
+const rootDirectory = getPackagesFolder().replace(/\\/g, "/")
 const watcher = chokidar.watch(rootDirectory, {
 	ignored: [
 		location => {

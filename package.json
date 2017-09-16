@@ -2,10 +2,10 @@
 	"name": "@dmail/workspace",
 	"version": "0.0.1",
 	"scripts": {
-		"link": "symlink ./packages --execute",
-		"install-code-extensions": "node ./scripts/installCodeExtensions.js",
-		"clone-repositories": "node ./scripts/gitClone.js",
-		"autocompile": "node ./scripts/runDistOnChange.js"
+		"link": "node ./scripts/link",
+		"install-code-extensions": "node ./scripts/installCodeExtensions",
+		"clone-repositories": "node ./scripts/gitClone",
+		"autocompile": "node ./scripts/runDistOnChange"
 	},
 	"dependencies": {
 		"eslint": "^3.19.0",

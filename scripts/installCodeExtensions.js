@@ -1,4 +1,4 @@
-const { execCommand } = require("./util/execCommand.js")
+const { execCommand } = require("./util/index.js")
 
 const command = "code"
 const args = ["--install-extension"]

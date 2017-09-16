@@ -1,3 +1,4 @@
+const path = require("path")
 const { spawn } = require("child_process")
 
 const isWindows = process.platform === "win32"
@@ -32,3 +33,6 @@ const execCommand = ({
 	})
 }
 exports.execCommand = execCommand
+
+const getPackagesFolder = () => path.resolve(__dirname, "../../../packages")
+exports.getPackagesFolder = getPackagesFolder

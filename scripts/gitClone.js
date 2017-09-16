@@ -1,5 +1,4 @@
-const path = require("path")
-const { execCommand } = require("./util/execCommand.js")
+const { execCommand, getPackagesFolder } = require("./util/index.js")
 
 const command = "git.exe"
 const args = ["clone"]
@@ -11,7 +10,7 @@ repositories
 			execCommand({
 				command,
 				args: [...args, `git@github.com:${repository}.git`],
-				cwd: path.resolve(__dirname, "../packages"),
+				cwd: getPackagesFolder(),
 				onData: console.log,
 				onError: console.error
 			}).then(console.log)
