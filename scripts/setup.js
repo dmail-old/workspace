@@ -1,9 +1,15 @@
-const { execCommand, getPackagesFolder } = require("./util/index.js")
+const setupFolder = require("./setupFolder.js")
+const gitClone = require("./gitClone.js")
+const symlink = require("./symlink.js")
 
-execCommand({
-	command: "symlink",
-	args: [".", "--execute"],
-	cwd: getPackagesFolder(),
-	onData: console.log,
-	onError: console.error
-}).catch(console.error)
+const setup = () =>
+	Promise.resolve()
+		.then(setupFolder)
+		.then(value => (value.startsWith("aborted") ? Promise.reject(value) : value))
+		.then(gitClone)
+		.then(symlink)
+
+if (require.main === module) {
+	setup()
+}
+module.exports = setup

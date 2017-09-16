@@ -3,20 +3,20 @@
 	"version": "0.0.1",
 	"scripts": {
 		"setup": "node ./scripts/setup",
-		"install-code-extensions": "node ./scripts/installCodeExtensions",
-		"clone-repositories": "node ./scripts/gitClone",
-		"autocompile": "node ./scripts/runDistOnChange"
+		"symlink": "node ./scripts/symlink",
+		"start": "node ./scripts/syncDist"
 	},
 	"dependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.17.0",
+		"babel-eslint": "^8.0.0",
+		"babel-preset-env": "*",
+		"chokidar": "^1.7.0",
 		"eslint": "^3.19.0",
 		"eslint-plugin-import": "^2.7.0",
-		"babel-eslint": "^8.0.0",
+		"find-nearest-package-json": "^2.0.1",
+		"ncp": "^2.0.0",
 		"prettier": "^1.7.0",
-		"babel-core": "^6.17.0",
-		"babel-cli": "^6.26.0",
-		"babel-preset-env": "*",
-		"symlink": "2.1.0",
-		"chokidar": "^1.7.0",
-		"find-nearest-package-json": "^2.0.1"
+		"symlink": "2.1.0"
 	}
 }

@@ -2,7 +2,9 @@ const path = require("path")
 const chokidar = require("chokidar")
 const fs = require("fs")
 const { findNearestPackageJsonSync } = require("find-nearest-package-json")
-const { execCommand, getPackagesFolder } = require("./util/execCommand.js")
+const { attempt, execCommand, getPackagesFolder } = require("./util/index.js")
+
+const scriptName = "dist"
 
 const rootDirectory = getPackagesFolder().replace(/\\/g, "/")
 const watcher = chokidar.watch(rootDirectory, {
@@ -34,18 +36,15 @@ const watcher = chokidar.watch(rootDirectory, {
 	persistent: true
 })
 const getPackageData = location => {
-	let buffer
-	try {
-		buffer = fs.readFileSync(path.join(location, "package.json"))
-	} catch (e) {
-		if (e && e.code === "ENOENT") {
-			return false
-		}
-		throw e
+	const { value: buffer, catched } = attempt(
+		() => fs.readFileSync(path.join(location, "package.json")),
+		exception => exception && exception.code === "ENOENT"
+	)
+	if (catched) {
+		return false
 	}
 	return JSON.parse(buffer.toString())
 }
-const scriptName = "dist"
 const getScript = data => {
 	if ("scripts" in data === false) {
 		return ""
@@ -64,27 +63,19 @@ const getScriptFromPackage = location => {
 	return ""
 }
 const getDistInfo = location => {
-	let distStat
-	try {
-		distStat = fs.statSync(path.join(location, "./dist"))
-	} catch (e) {
-		if (e && e.code === "ENOENT") {
-			return {
-				exists: false
-			}
-		}
-		throw e
-	}
-
+	const { value: distStat, catched } = attempt(
+		() => fs.statSync(path.join(location, "./dist")),
+		exception => exception && exception.code === "ENOENT"
+	)
 	return {
-		exists: true,
-		isDirectory: distStat.isDirectory()
+		exists: !catched,
+		isDirectory: catched ? undefined : distStat.isDirectory()
 	}
 }
-const runScript = location => {
+const runNpmCommand = location => {
 	const command = "npm"
 	const args = ["run", "dist"]
-	execCommand({
+	return execCommand({
 		command,
 		args,
 		cwd: location,
@@ -100,14 +91,14 @@ const runScriptAfterDirectoryDiscovered = location => {
 			console.warn("found a file named dist")
 			return
 		} else if (exists === false) {
-			runScript(location)
+			runNpmCommand(location)
 		}
 	}
 }
 const runScriptAfterFileChange = (location, data) => {
 	const script = getScript(data)
 	if (script) {
-		runScript(location)
+		runNpmCommand(location)
 	}
 }
 
@@ -124,19 +115,16 @@ watcher.on("add", location => {
 })
 watcher.on("change", location => {
 	location = location.replace(/\\/g, "/")
-	let packageInfo
-	try {
-		packageInfo = findNearestPackageJsonSync(location)
-	} catch (e) {
-		if (e && e.message === "No package.json files found") {
-			return
-		}
-		throw e
+	const { value: packageInfo, catched } = attempt(
+		() => findNearestPackageJsonSync(location),
+		exception => exception && exception.message === "No package.json files found"
+	)
+	if (catched) {
+		return
 	}
 	const { path: packagePath, data } = packageInfo
 	const parent = path.dirname(packagePath)
 	runScriptAfterFileChange(parent, data)
-	// console.log(`File ${location} has been changed, stats ${stats}`)
 })
 
 const isWindows = process.platform === "win32"
