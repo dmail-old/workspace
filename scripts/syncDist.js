@@ -1,3 +1,13 @@
+// au lieu de watch les fichiers
+// on pourrait juste lancer npm run dist --watch dans chaque repo
+// y'a une options babel --only= pour dire ne compile que ça en combo avec --watch c'est nickel
+// ou sinon on lancer une seule fois pour toute
+// ici même, et le only est dynamique ou au moins il match ça:
+// --only=packages/.*?/index.js,packages/.*?/src/.*?
+// nan en fait je sais quand le fichier est modifié et je dis à babel de le compilé
+// c'est pas le repo qui se watch lui même et pourquoi? juste pour éviter de lancer plein de process?
+// après tout je m'en fou
+
 const path = require("path")
 const chokidar = require("chokidar")
 const fs = require("fs")
