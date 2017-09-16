@@ -1,46 +1,48 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    // {
-    //   "type": "node",
-    //   "request": "launch",
-    //   // "protocol": "inspector",      "request": "launch",
-    //   "name": "Lancer avec nodejs",
-    //   "program": "${file}",
-    //   "runtimeExecutable": "/Users/d.maillard/.nvm/versions/node/v8.5.0/bin/node",
-    //   "runtimeArgs": [
-    //       "--experimental-modules"
-    //   ]
-    // },
-    {
-      "type": "node",
-      "protocol": "inspector",
-      "request": "launch",
-      "name": "Lancer le programme",
-      "preLaunchTask": null,
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
-      "runtimeArgs": [
-        "--nolazy"
-      ],
-      "stopOnEntry": false,
-      "env": {
-        "NODE_ENV": "development"
-        // "BABEL_CACHE_PATH": "C:\\Users\\Damien\\Dev\\cache\\babel.json"
-      },
-      // "console": "internalConsole",
-      // "outFiles": [],
-      "sourceMaps": true,
-      "program": "${file}",
-      "skipFiles": [
-        "packages/signal/src/**"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attacher au port",
-      "address": "localhost",
-      "port": 5858
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch with node",
+			"program": "${file}"
+		},
+		// {
+		//   "type": "node",
+		//   "request": "launch",
+		//   // "protocol": "inspector",      "request": "launch",
+		//   "name": "Lancer avec nodejs",
+		//   "program": "${file}",
+		//   "runtimeExecutable": "/Users/d.maillard/.nvm/versions/node/v8.5.0/bin/node",
+		//   "runtimeArgs": [
+		//       "--experimental-modules"
+		//   ]
+		// },
+		{
+			"type": "node",
+			"protocol": "inspector",
+			"request": "launch",
+			"name": "Launch with babel-node",
+			"preLaunchTask": null,
+			"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+			"runtimeArgs": ["--nolazy"],
+			"stopOnEntry": false,
+			"env": {
+				"NODE_ENV": "development"
+				// "BABEL_CACHE_PATH": "C:\\Users\\Damien\\Dev\\cache\\babel.json"
+			},
+			// "console": "internalConsole",
+			// "outFiles": [],
+			"sourceMaps": true,
+			"program": "${file}",
+			"skipFiles": ["packages/signal/src/**"]
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attacher au port",
+			"address": "localhost",
+			"port": 5858
+		}
+	]
 }

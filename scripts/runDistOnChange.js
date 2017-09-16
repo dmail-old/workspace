@@ -1,8 +1,8 @@
 const path = require("path")
 const chokidar = require("chokidar")
 const fs = require("fs")
-const childProcess = require("child_process")
 const { findNearestPackageJsonSync } = require("find-nearest-package-json")
+const { execCommand } = require("./util/execCommand.js")
 
 const rootDirectory = path.resolve(__dirname, "../packages").replace(/\\/g, "/")
 const watcher = chokidar.watch(rootDirectory, {
@@ -82,13 +82,15 @@ const getDistInfo = location => {
 	}
 }
 const runScript = location => {
-	const command = "npm run dist"
-	console.log(`cd ${location} && ${command}`)
-	const output = childProcess.execSync(command, {
-		cwd: location
-	})
-	console.log(output.toString())
-	console.log(`${command} done`)
+	const command = "npm"
+	const args = ["run", "dist"]
+	execCommand({
+		command,
+		args,
+		cwd: location,
+		onData: console.log,
+		onError: console.error
+	}).then(console.log, console.error)
 }
 const runScriptAfterDirectoryDiscovered = location => {
 	const script = getScriptFromPackage(location)
@@ -98,10 +100,7 @@ const runScriptAfterDirectoryDiscovered = location => {
 			console.warn("found a file named dist")
 			return
 		} else if (exists === false) {
-			const output = childProcess.execSync(`npm run dist`, {
-				cwd: location
-			})
-			console.log(output.toString())
+			runScript(location)
 		}
 	}
 }

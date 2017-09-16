@@ -1,13 +1,10 @@
 {
-	"name": "@dmail/npmlink",
+	"name": "@dmail/workspace",
 	"version": "0.0.1",
 	"scripts": {
 		"link": "symlink ./packages --execute",
-		"code-install-path": "code --install-extension christian-kohler.path-intellisense",
-		"code-install-eslint": "code --install-extension dbaeumer.vscode-eslint",
-		"code-install-prettier": "code --install-extension esbenp.prettier-vscode",
-		"code-install-extensions":
-			"npm run code-install-path && npm run code-install-eslint && npm run code-install prettier",
+		"install-code-extensions": "node ./scripts/installCodeExtensions.js",
+		"clone-repositories": "node ./scripts/gitClone.js",
 		"autocompile": "node ./scripts/runDistOnChange.js"
 	},
 	"dependencies": {
