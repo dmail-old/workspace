@@ -2,7 +2,7 @@
 	"name": "@dmail/workspace",
 	"version": "0.0.1",
 	"scripts": {
-		"link": "node ./scripts/link",
+		"setup": "node ./scripts/setup",
 		"install-code-extensions": "node ./scripts/installCodeExtensions",
 		"clone-repositories": "node ./scripts/gitClone",
 		"autocompile": "node ./scripts/runDistOnChange"
