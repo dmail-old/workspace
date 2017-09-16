@@ -24,7 +24,7 @@
 			"request": "launch",
 			"name": "Launch with babel-node",
 			"preLaunchTask": null,
-			"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+			"runtimeExecutable": "babel-node", // you have to npm i -g babel-node
 			"runtimeArgs": ["--nolazy"],
 			"stopOnEntry": false,
 			"env": {
