@@ -31,4 +31,4 @@ const setupFolder = () => {
 		})
 	})
 }
-exposeModuleCommand(module, setupFolder, fn => fn())
+exposeModuleCommand(module, setupFolder, setupFolderPromise => setupFolderPromise)
