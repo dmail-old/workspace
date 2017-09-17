@@ -7,17 +7,18 @@
 			"name": "Launch with node",
 			"program": "${file}"
 		},
-		// {
-		//   "type": "node",
-		//   "request": "launch",
-		//   // "protocol": "inspector",      "request": "launch",
-		//   "name": "Lancer avec nodejs",
-		//   "program": "${file}",
-		//   "runtimeExecutable": "/Users/d.maillard/.nvm/versions/node/v8.5.0/bin/node",
-		//   "runtimeArgs": [
-		//       "--experimental-modules"
-		//   ]
-		// },
+		{
+			"name": "Launch as dist",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/.vscode/runAsDist.js",
+			"args": ["${file}"],
+			"cwd": "${workspaceRoot}",
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_PATH": "${workspaceRoot}/dist"
+			}
+		},
 		{
 			"type": "node",
 			"protocol": "inspector",
@@ -29,10 +30,7 @@
 			"stopOnEntry": false,
 			"env": {
 				"NODE_ENV": "development"
-				// "BABEL_CACHE_PATH": "C:\\Users\\Damien\\Dev\\cache\\babel.json"
 			},
-			// "console": "internalConsole",
-			// "outFiles": [],
 			"sourceMaps": true,
 			"program": "${file}",
 			"skipFiles": ["packages/signal/src/**"]

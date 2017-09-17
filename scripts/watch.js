@@ -1,6 +1,7 @@
 const path = require("path")
 const fs = require("fs")
-const { attempt, execCommand, getPackagesFolder } = require("./util/index.js")
+const { createCommand, execAll } = require("../command")
+const { attempt, getPackagesFolder } = require("./util/index.js")
 
 const scriptName = "watch"
 
@@ -31,17 +32,6 @@ const getScriptFromPackage = location => {
 	}
 	return ""
 }
-const runNpmCommand = location => {
-	const command = "npm"
-	const args = ["run", scriptName]
-	return execCommand({
-		command,
-		args,
-		cwd: location,
-		onData: console.log,
-		onError: console.error
-	}).then(console.log, console.error)
-}
 const readDirectory = location =>
 	new Promise((resolve, reject) => {
 		fs.readdir(location, (error, files) => {
@@ -58,12 +48,20 @@ const execNpmScript = () => {
 	return readDirectory(rootDirectory)
 		.then(files => files.map(file => path.join(rootDirectory, file)))
 		.then(folders => {
+			const commands = []
 			folders.forEach(folder => {
 				const script = getScriptFromPackage(folder)
 				if (script) {
-					runNpmCommand(folder)
+					commands.push(
+						createCommand({
+							command: "npm",
+							args: ["run", scriptName],
+							cwd: location
+						})
+					)
 				}
 			})
+			execAll(commands)
 		})
 }
 

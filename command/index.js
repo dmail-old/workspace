@@ -1,0 +1,195 @@
+// const path = require("path")
+const treeKill = require("tree-kill")
+const { spawn } = require("child_process")
+const { whenWillTerminate, whenTerminate } = require("./whenProcess.js")
+
+const isWindows = process.platform === "win32"
+const defaultArgs = []
+
+const defaultOnMessage = text => process.stdout.write(text)
+const defaultOnAlarm = text => process.stderr.write(text)
+
+const createCommand = ({ name, label, args = defaultArgs, cwd = process.cwd() }) => {
+	if (isWindows) {
+		if (name.endsWith(".exe") === false) {
+			name += ".cmd"
+		}
+	}
+
+	const toString = () => `${name} ${args.join(" ")}`
+
+	const fork = ({
+		onMessage = defaultOnMessage,
+		onAlarm = defaultOnAlarm,
+		onError = defaultOnAlarm,
+		onExit = status => defaultOnMessage(`exited with ${status}`)
+	}) => {
+		let alive = false
+		const execution = {}
+		const isAlive = () => alive
+		const kill = signal => (isAlive() ? treeKill(execution.process.pid, signal) : undefined)
+
+		setImmediate(() => {
+			try {
+				const commandProcess = spawn(name, args, { cwd })
+				onMessage(toString() + "\n") // eslint-disable-line prefer-template
+				execution.process = commandProcess
+				alive = true
+				commandProcess.stdout.on("data", data => {
+					onMessage(data.toString())
+				})
+				commandProcess.stderr.on("data", data => {
+					onAlarm(data.toString())
+				})
+				commandProcess.on("error", error => {
+					onError(error)
+				})
+				commandProcess.on("close", status => {
+					alive = false
+					onExit(status)
+				})
+				whenWillTerminate(() => {
+					kill("SIGINT")
+				})
+				whenTerminate(() => {
+					kill("SIGTERM")
+				})
+			} catch (error) {
+				onError(error)
+			}
+		})
+
+		Object.assign(execution, { isAlive, kill })
+
+		return execution
+	}
+
+	return {
+		name,
+		label,
+		args,
+		toString,
+		fork
+	}
+}
+
+const abbreviate = (text, maxTotalLength, abbreviation = "..") => {
+	const length = text.length
+	if (length <= maxTotalLength) {
+		return text
+	}
+	if (abbreviation.length > maxTotalLength - 2) {
+		throw new Error(`abbreviation must be < ${maxTotalLength - 1}`)
+	}
+
+	const maxLength = maxTotalLength - abbreviation.length
+	const maxEndLength = Math.floor(maxLength / 2)
+	const maxStartLength = maxLength - maxEndLength
+
+	const truncatedStart = text.slice(0, maxStartLength)
+	const truncatedEnd = text.slice(-maxEndLength)
+
+	return truncatedStart + abbreviation + truncatedEnd
+}
+
+const addLine = text => text + "\n" // eslint-disable-line prefer-template
+const prefix = (command, text, noline) => {
+	let commandIdentifier
+	if ("label" in command && command.label) {
+		commandIdentifier = command.label
+	} else {
+		commandIdentifier = command.name
+	}
+
+	const prefixString = abbreviate(commandIdentifier, 10)
+	const prefixed = `${prefixString}: ${text}`
+	return noline ? prefixed : addLine(prefixed)
+}
+const createAlarmFromError = (command, error) =>
+	prefix(
+		command,
+		`Error while executing:
+${error.stack}`
+	)
+const createMessageFromSuccess = (command, status) => prefix(command, `exited with ${status}`)
+const createAlarmFromFailure = (command, status) => prefix(command, `exited with ${status}`)
+
+exports.createCommand = createCommand
+
+const exec = (command, { onMessage = defaultOnMessage, onAlarm = defaultOnAlarm } = {}) =>
+	new Promise((resolve, reject) => {
+		command.fork({
+			onMessage: text => onMessage(prefix(command, text, true)),
+			onAlarm: text => onMessage(prefix(command, text, true)),
+			onError: error => onAlarm(createAlarmFromError(error)),
+			onExit: status => {
+				if (status === 0) {
+					onMessage(createMessageFromSuccess(command, status))
+					resolve()
+				} else {
+					onAlarm(createAlarmFromFailure(command, status))
+					reject()
+				}
+			}
+		})
+	})
+exports.exec = exec
+
+const execSequence = (commands, { onMessage = defaultOnMessage, onAlarm = defaultOnAlarm } = {}) =>
+	commands.reduce(
+		(previous, command, index) =>
+			previous.then(() => {
+				if (index > 0) {
+					onMessage("\n")
+				}
+				return exec(command, { onMessage, onAlarm })
+			}),
+		Promise.resolve()
+	)
+exports.execSequence = execSequence
+
+/*
+execute all commands in parallel and fails if any fails (killing remaining)
+or pass if all pass
+*/
+const execAll = (commands, { onMessage = defaultOnMessage, onAlarm = defaultOnAlarm } = {}) =>
+	new Promise((resolve, reject) => {
+		const handleError = (error, command) => onAlarm(createAlarmFromError(error, command))
+
+		const executions = []
+		const killOthers = (command, index) => {
+			onMessage("sending SIGTERM to other processes..")
+			executions.forEach(({ kill }, executionIndex) => {
+				if (executionIndex !== index) {
+					kill("SIGTERM")
+				}
+			})
+		}
+		const commandStatus = []
+		const handleExit = (status, command, index) => {
+			commandStatus[index] = status
+			if (status === 0) {
+				onMessage(createMessageFromSuccess(status, command, index))
+				if (commandStatus.length === commands.length) {
+					resolve()
+				}
+			} else {
+				onAlarm(createAlarmFromFailure(status, command, index))
+				killOthers(command, index)
+				reject()
+			}
+		}
+
+		commands.forEach((command, index) => {
+			const execution = command.fork({
+				onMessage: text => onMessage(text),
+				onAlarm: text => onAlarm(text),
+				onError: error => handleError(error, command, index),
+				onExit: status => handleExit(status, command, index)
+			})
+			executions.push(execution)
+		})
+	})
+exports.execAll = execAll
+
+// we could add execAny, execRace etc...

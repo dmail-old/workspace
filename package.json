@@ -7,14 +7,12 @@
 		"watch": "node ./scripts/watch"
 	},
 	"dependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-core": "^6.17.0",
 		"babel-eslint": "^8.0.0",
-		"babel-preset-env": "*",
 		"eslint": "^3.19.0",
 		"eslint-plugin-import": "^2.7.0",
 		"ncp": "^2.0.0",
 		"prettier": "^1.7.0",
-		"symlink": "2.1.0"
+		"symlink": "2.1.0",
+		"tree-kill": "^1.1.0"
 	}
 }
