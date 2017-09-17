@@ -1,6 +1,6 @@
 const path = require("path")
 const fs = require("fs")
-const { createCommand, execAll } = require("../command")
+const { createCommand, exposeModuleCommand, execAll } = require("../command")
 const { attempt, getPackagesFolder } = require("./util/index.js")
 
 const scriptName = "watch"
@@ -42,7 +42,7 @@ const readDirectory = location =>
 		})
 	})
 
-const execNpmScript = () => {
+const createNpmScriptCommands = () => {
 	const rootDirectory = getPackagesFolder().replace(/\\/g, "/")
 
 	return readDirectory(rootDirectory)
@@ -61,11 +61,7 @@ const execNpmScript = () => {
 					)
 				}
 			})
-			execAll(commands)
+			return commands
 		})
 }
-
-if (require.main === module) {
-	execNpmScript()
-}
-module.exports = execNpmScript()
+exposeModuleCommand(module, createNpmScriptCommands, execAll)

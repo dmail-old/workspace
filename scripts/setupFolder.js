@@ -2,6 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const ncp = require("ncp").ncp
 const { getPackagesFolder } = require("./util/index.js")
+const { exposeModuleCommand } = require("../command")
 
 const setupFolder = () => {
 	return new Promise((resolve, reject) => {
@@ -30,7 +31,4 @@ const setupFolder = () => {
 		})
 	})
 }
-if (require.main === module) {
-	setupFolder()
-}
-module.exports = setupFolder
+exposeModuleCommand(module, setupFolder, fn => fn())

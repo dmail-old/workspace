@@ -1,9 +1,7 @@
-// on pourrait vouloir s'assurer que ce fichier est bien compilé avant de le run
-// pour cela il faudrais npm run compile
-
 // inspired from https://gist.github.com/dchowitz/83bdd807b5fa016775f98065b381ca4e
 
 const path = require("path")
+const childProcess = require("child_process")
 
 const file = process.argv[2]
 
@@ -17,6 +15,13 @@ const cwd = process.cwd()
 const fileRelativeToCwd = path.relative(cwd, resolvedFile)
 const packageDirectoryName = fileRelativeToCwd.split(path.sep)[0]
 const fileRelativePackageDirectory = fileRelativeToCwd.slice(packageDirectoryName.length)
-const distFile = path.join(cwd, packageDirectoryName, "dist", fileRelativePackageDirectory)
+const packageDirectory = path.join(cwd, packageDirectoryName)
+
+// ensure dist is fresh
+// (we could manually ensure dist is fresh, or disable it with an option)
+// for now always recompile before executing (seems logic)
+childProcess.spawnSync("npm", ["run", "compile"], { cwd: packageDirectory })
+
+const distFile = path.join(packageDirectory, "dist", fileRelativePackageDirectory)
 
 require(distFile)

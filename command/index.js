@@ -193,3 +193,14 @@ const execAll = (commands, { onMessage = defaultOnMessage, onAlarm = defaultOnAl
 exports.execAll = execAll
 
 // we could add execAny, execRace etc...
+
+const exposeModuleCommand = (module, commandFactory, runCommand = exec) => {
+	if (!module.parent) {
+		Promise.resolve()
+			.then(commandFactory)
+			.then(runCommand)
+			.then(() => process.exit(0), () => process.exit(1))
+	}
+	module.exports = commandFactory
+}
+exports.exposeModuleCommand = exposeModuleCommand

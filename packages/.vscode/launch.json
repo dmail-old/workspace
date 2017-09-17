@@ -8,10 +8,10 @@
 			"program": "${file}"
 		},
 		{
-			"name": "Launch as dist",
+			"name": "Launch from dist",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/.vscode/runAsDist.js",
+			"program": "${workspaceRoot}/.vscode/runFromDist.js",
 			"args": ["${file}"],
 			"cwd": "${workspaceRoot}",
 			"env": {
