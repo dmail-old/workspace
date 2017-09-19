@@ -11,13 +11,15 @@
 			"name": "Launch from dist",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/.vscode/runFromDist.js",
+			"preLaunchTask": "npm run compile", // ensure dist is fresh (compile before running)
+			"program": "${workspaceRoot}/runFromDist.js",
 			"args": ["${file}"],
 			"cwd": "${workspaceRoot}",
 			"env": {
 				"NODE_ENV": "development",
 				"NODE_PATH": "${workspaceRoot}/dist"
-			}
+			},
+			"skipFiles": ["node_modules/**"]
 		},
 		{
 			"type": "node",
@@ -33,7 +35,7 @@
 			},
 			"sourceMaps": true,
 			"program": "${file}",
-			"skipFiles": ["packages/signal/src/**"]
+			"skipFiles": ["node_modules/**"]
 		},
 		{
 			"type": "node",

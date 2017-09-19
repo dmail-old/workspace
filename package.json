@@ -2,11 +2,12 @@
 	"name": "@dmail/workspace",
 	"version": "0.0.1",
 	"scripts": {
-		"setup": "node ./scripts/setup",
 		"symlink": "node ./scripts/symlink",
 		"watch": "node ./scripts/watch"
 	},
 	"dependencies": {
+		"@dmail/shared-config": "*",
+		"@dmail/commmand": "*",
 		"babel-eslint": "^8.0.0",
 		"eslint": "^3.19.0",
 		"eslint-plugin-import": "^2.7.0",

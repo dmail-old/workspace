@@ -11,8 +11,13 @@ if (!file) {
 
 const resolvedFile = path.resolve(file)
 const cwd = process.cwd()
-const fileRelativeToCwd = path.relative(cwd, resolvedFile)
-const relativeFileParts = fileRelativeToCwd.split(path.sep)
+const packageDirectory = cwd
+const compiledDirectory = path.join(packageDirectory, "dist")
+
+if (resolvedFile.indexOf(compiledDirectory) === 0) {
+  process.stderr.write(`file in ${compiledDirectory} not allowed`)
+  process.exit(1)
+}
 
 // only index.js, index.test.js and src/* can be runned from dist
 // we don't really have to check this because the require() will fail saying
@@ -35,16 +40,9 @@ const relativeFileParts = fileRelativeToCwd.split(path.sep)
 // 	process.exit(1)
 // }
 
-const packageDirectoryName = relativeFileParts[0]
-const packageDirectory = path.join(cwd, packageDirectoryName)
-// ensure dist is fresh
-// (we could manually ensure dist is fresh, or disable it with an option)
-// for now always recompile before executing (seems logic)
-childProcess.spawnSync("npm", ["run", "compile"], { cwd: packageDirectory })
-
 // locate the file to execute it
-const fileRelativeToPackageDirectory = fileRelativeToCwd.slice(packageDirectoryName.length)
-const distFile = path.join(packageDirectory, "dist", fileRelativeToPackageDirectory)
+const fileRelativeToPackageDirectory = path.relative(packageDirectory, resolvedFile)
+const distFile = path.join(compiledDirectory, fileRelativeToPackageDirectory)
 
 // execute using require (this way process.args like --inspect are fowarded)
 require(distFile)

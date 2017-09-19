@@ -3,10 +3,9 @@ This is an example of structure used locally (during dev) to manage a group of e
 # Presentation
 
 packages contains a folder per node module that you want to work on.
-you have to git clone all repository in that folder.
-Then you do npm run link.
+you can git clone existing repo in this folder.
+or create a new repo using the create command.
 
-I'll write a script watching for every package files and running npm run compile when a file changes
-
-For code coverage : https://github.com/istanbuljs/nyc
+- Then npm run symlink
+- Then npm run watch
 
