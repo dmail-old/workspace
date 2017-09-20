@@ -5,8 +5,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch with node",
-			"program": "${file}",
-			"console": "internalConsole"
+			"program": "${file}"
 		}
 	]
 }

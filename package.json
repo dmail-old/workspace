@@ -1,19 +1,24 @@
 {
 	"name": "@dmail/workspace",
 	"version": "0.0.1",
+	"licence": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dmail/workspace"
+	},
 	"scripts": {
-		"symlink": "node ./scripts/symlink",
-		"watch": "node ./scripts/watch"
+		"workspace init": "node ./scripts/init",
+		"workspace link": "node ./scripts/symlink",
+		"workspace watch": "node ./scripts/watch"
 	},
 	"dependencies": {
-		"@dmail/shared-config": "*",
 		"@dmail/commmand": "*",
+		"@dmail/shared-config": "^1.0.1",
 		"babel-eslint": "^8.0.0",
 		"eslint": "^3.19.0",
 		"eslint-plugin-import": "^2.7.0",
 		"ncp": "^2.0.0",
 		"prettier": "^1.7.0",
-		"symlink": "2.1.0",
-		"tree-kill": "^1.1.0"
+		"symlink": "2.1.0"
 	}
 }

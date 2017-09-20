@@ -1,3 +1,5 @@
+// a chokidar to auto rerun this when any directory gets added/removed from packages/* ??
+
 const { createCommand, exposeModuleCommand } = require("../command")
 const { getPackagesFolder } = require("./util/index.js")
 

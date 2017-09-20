@@ -1,3 +1,5 @@
+// a chokidar to auto watch any added directory into packages/* ??
+
 const path = require("path")
 const fs = require("fs")
 const { createCommand, exposeModuleCommand, execAll } = require("../command")
