@@ -1,7 +1,7 @@
 const prettier = require("prettier")
 const fs = require("fs")
-const { findFilesForPrettier } = require("./index.js")
-const { promisifyNodeCallback, promiseParallel } = require("./promise-utils.js")
+const { findFilesForPrettier } = require("./util/find-files.js")
+const { promisifyNodeCallback, promiseParallel } = require("./util/promise-utils.js")
 
 const getFileContent = promisifyNodeCallback(fs.readFile)
 

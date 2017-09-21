@@ -1,5 +1,5 @@
-const { promiseSequence } = require("./promise-utils.js")
-const { findFilesForTest } = require("./index.js")
+const { promiseSequence } = require("./util/promise-utils.js")
+const { findFilesForTest } = require("./util/find-files.js")
 
 const runTest = file => {
 	console.log(`loading ${file}`)
