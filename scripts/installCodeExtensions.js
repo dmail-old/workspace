@@ -1,4 +1,4 @@
-const { createCommand, exposeModuleCommand, execSequence } = require("../command")
+const { createCommand, exposeModuleCommand, execSequence } = require("@dmail/command")
 
 const defaultExtensions = [
 	"christian-kohler.path-intellisense",

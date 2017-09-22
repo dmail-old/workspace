@@ -2,7 +2,7 @@
 
 const path = require("path")
 const fs = require("fs")
-const { createCommand, exposeModuleCommand, execAll } = require("../command")
+const { createCommand, exposeModuleCommand, execAll } = require("@dmail/command")
 const { attempt, getPackagesFolder } = require("./util/index.js")
 
 const scriptName = "watch"

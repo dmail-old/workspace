@@ -1,6 +1,6 @@
 // init a package inside the current folder, the folder must be empty else we throw
 
-const { exposeModuleCommand } = require("../command")
+const { exposeModuleCommand } = require("@dmail/command")
 const path = require("path")
 const fs = require("fs")
 const ncp = require("ncp").ncp
@@ -19,7 +19,7 @@ const directoryIsEmpty = directory =>
 const copyTemplateIntoDirectory = directory =>
 	new Promise((resolve, reject) => {
 		const options = { clobber: true, stopOnErr: true }
-		console.log(`copy ${source} content into ${destination}`)
+		console.log(`copy ${templateDirectory} content into ${directory}`)
 		ncp(templateDirectory, directory, options, error => {
 			if (error) {
 				return reject(error)

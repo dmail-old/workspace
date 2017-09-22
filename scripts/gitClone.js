@@ -1,4 +1,4 @@
-const { createCommand, exposeModuleCommand, execAll } = require("../command")
+const { createCommand, exposeModuleCommand, execAll } = require("@dmail/command")
 const { getPackagesFolder } = require("./util/index.js")
 
 const defaultRepositories = [
