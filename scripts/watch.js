@@ -5,7 +5,15 @@ const fs = require("fs")
 const { createCommand, exposeModuleCommand, execAll } = require("@dmail/command")
 const { attempt, getPackagesFolder } = require("./util/index.js")
 
-const scriptName = "watch"
+const readDirectory = location =>
+	new Promise((resolve, reject) => {
+		fs.readdir(location, (error, files) => {
+			if (error) {
+				return reject(error)
+			}
+			resolve(files)
+		})
+	})
 
 const getPackageData = location => {
 	const { value: buffer, catched } = attempt(
@@ -17,53 +25,55 @@ const getPackageData = location => {
 	}
 	return JSON.parse(buffer.toString())
 }
-const getScript = data => {
-	if ("scripts" in data === false) {
+
+const createNpmScriptRunner = ({ scriptName }) => {
+	const getScript = data => {
+		if ("scripts" in data === false) {
+			return ""
+		}
+		const scripts = data.scripts
+		if (scriptName in scripts === false) {
+			return ""
+		}
+		return scripts[scriptName]
+	}
+
+	const getScriptFromPackage = location => {
+		const data = getPackageData(location)
+		if (data) {
+			return getScript(data)
+		}
 		return ""
 	}
-	const scripts = data.scripts
-	if (scriptName in scripts === false) {
-		return ""
-	}
-	return scripts[scriptName]
-}
-const getScriptFromPackage = location => {
-	const data = getPackageData(location)
-	if (data) {
-		return getScript(data)
-	}
-	return ""
-}
-const readDirectory = location =>
-	new Promise((resolve, reject) => {
-		fs.readdir(location, (error, files) => {
-			if (error) {
-				return reject(error)
-			}
-			resolve(files)
-		})
-	})
 
-const createNpmScriptCommands = () => {
-	const rootDirectory = getPackagesFolder().replace(/\\/g, "/")
+	const createNpmScriptCommands = () => {
+		const rootDirectory = getPackagesFolder().replace(/\\/g, "/")
 
-	return readDirectory(rootDirectory)
-		.then(files => files.map(file => path.join(rootDirectory, file)))
-		.then(folders => {
-			const commands = []
-			folders.forEach(folder => {
-				const script = getScriptFromPackage(folder)
-				if (script) {
-					commands.push(
-						createCommand({
-							command: "npm",
-							args: ["run", scriptName],
-							cwd: location
-						})
-					)
-				}
+		return readDirectory(rootDirectory)
+			.then(files => files.map(file => path.join(rootDirectory, file)))
+			.then(folders => {
+				const commands = []
+				folders.forEach(folder => {
+					const script = getScriptFromPackage(folder)
+					if (script) {
+						commands.push(
+							createCommand({
+								command: "npm",
+								args: ["run", scriptName],
+								cwd: location
+							})
+						)
+					}
+				})
+				return commands
 			})
-			return commands
-		})
+	}
+
+	return createNpmScriptCommands
 }
-exposeModuleCommand(module, createNpmScriptCommands, execAll)
+
+const runNpmWatchScripts = createNpmScriptRunner({
+	name: "watch"
+})
+
+exposeModuleCommand(module, runNpmWatchScripts, execAll)

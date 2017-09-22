@@ -50,28 +50,58 @@ const createFileFinder = ({ file = () => true, folder = () => true }) => (
 }
 exports.createFileFinder = createFileFinder
 
+// instead of ./index.js below we should read it from package.json module field
+const relativeEntryFile = "./index.js"
+
 const isTestFile = location => /\.test\..+$/.test(location)
-const isRootFile = (location, root) => path.dirname(location) === root
 
 const isRootFolder = (location, root) => location === root
 const isSourceFolder = (location, root) => location.startsWith(path.join(root, "src"))
-const isIndexFile = (location, root) =>
-	isRootFile(location, root) && path.basename(location) === "index.js"
-const isIndexTestFile = (location, root) => isRootFile(location, root) && isTestFile(location)
+const isEntryFile = (location, root) => path.resolve(root, relativeEntryFile) === location
+const isEntryTestFile = (location, root) => {
+	const entryFile = path.resolve(root, relativeEntryFile)
+	const entryFolder = path.dirname(entryFile)
+	const folder = path.dirname(location)
+	if (entryFolder !== folder) {
+		return false
+	}
+	return isTestFile(path.basename(location))
+}
 const isSourceFile = (location, root) => location.startsWith(path.join(root, "src"))
 const isSourceTestFile = (location, root) => isSourceFile(location, root) && isTestFile(location)
 
-// source & test files are prettified
+const taggers = [
+	{
+		name: "code",
+		when: (location, root) =>
+			isRootFolder(location, root) ||
+			isSourceFolder(location, root) ||
+			isSourceFile(location, root) ||
+			isEntryFile(location, root)
+	},
+	{
+		name: "test",
+		when: (location, root) => isSourceTestFile(location, root) || isEntryTestFile(location, root)
+	}
+]
+
+const getFileTags = (...args) =>
+	taggers.filter(tagger => tagger.when(...args)).map(tagger => tagger.name)
+
+const matchAnyTags = (...tags) => ({ location, root }) =>
+	getFileTags(location, root).some(tag => tags.includes(tag))
+
+// code & test files are prettified
 const findFilesForPrettier = createFileFinder({
-	folder: ({ location, root }) => isRootFolder(location, root) || isSourceFolder(location, root),
-	file: ({ location, root }) =>
-		isIndexFile(location, root) || isIndexTestFile(location, root) || isSourceFile(location, root)
+	folder: matchAnyTags("code"),
+	file: matchAnyTags("code", "test")
 })
+
 exports.findFilesForPrettier = findFilesForPrettier
 
 // test files are tested
 const findFilesForTest = createFileFinder({
-	folder: ({ location, root }) => isRootFolder(location, root) || isSourceFolder(location, root),
-	file: ({ location, root }) => isIndexTestFile(location, root) || isSourceTestFile(location, root)
+	folder: matchAnyTags("code"),
+	file: matchAnyTags("test")
 })
 exports.findFilesForTest = findFilesForTest
