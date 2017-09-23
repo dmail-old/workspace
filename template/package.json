@@ -15,6 +15,8 @@
 	"devDependencies": {
 		"@dmail/shared-config": "*",
 		"@dmail/command": "*",
+		"@dmail/prettiest": "*",
+		"@dmail/test": "*",
 		"babel-cli": "^7.0.0-beta.0",
 		"babel-core": "^7.0.0-beta.0",
 		"babel-eslint": "^8.0.0",
@@ -31,8 +33,8 @@
 		"dist": "npm run clean && npm run compile",
 		"prepublishOnly": "npm run dist",
 		"eslint": "eslint .",
-		"ensure-pretty": "",
-		"pretest": "npm run eslint && npm run ensure-pretty && npm run compile",
-		"test": "babel-node ./src/index.test.js"
+		"prettiest": "prettiest",
+		"test": "test",
+		"pretest": "npm run eslint && npm run prettiest && npm run compile"
 	}
 }
