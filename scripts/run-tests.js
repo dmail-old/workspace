@@ -1,3 +1,7 @@
+// en faire un module à part
+// utiliser ceci https://github.com/kaelzhang/node-glob-gitignore
+// pour trouver les fichiers, en lisant le .testignore
+
 const { promiseSequence } = require("./util/promise-utils.js")
 const { findFilesForTest } = require("./util/find-files.js")
 
