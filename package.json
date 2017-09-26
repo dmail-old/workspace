@@ -7,9 +7,9 @@
 		"url": "https://github.com/dmail/workspace"
 	},
 	"scripts": {
-		"workspace init": "node ./scripts/init",
-		"workspace link": "node ./scripts/symlink",
-		"workspace watch": "node ./scripts/watch"
+		"workspace-init": "node ./scripts/init",
+		"workspace-link": "node ./scripts/link",
+		"workspace-watch": "node ./scripts/watch"
 	},
 	"dependencies": {
 		"@dmail/command": "0.0.1",

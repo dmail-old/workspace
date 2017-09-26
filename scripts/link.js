@@ -5,7 +5,7 @@ const { getPackagesFolder } = require("./util/index.js")
 
 const createSymlinkCommand = () =>
 	createCommand({
-		command: "symlink",
+		name: "../node_modules/.bin/symlink",
 		args: [".", "--execute"],
 		cwd: getPackagesFolder()
 	})

@@ -2,7 +2,7 @@
 
 const path = require("path")
 
-const getPackagesFolder = () => path.resolve(__dirname, "../../../packages")
+const getPackagesFolder = () => path.resolve(__dirname, "../../packages")
 exports.getPackagesFolder = getPackagesFolder
 
 const attempt = (fn, catchWhen = () => false) => {
