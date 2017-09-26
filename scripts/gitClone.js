@@ -4,16 +4,21 @@ const { getPackagesFolder } = require("./util/index.js")
 const defaultRepositories = [
 	"dmail/sample-common-dependency",
 	"dmail/sample-main",
-	"dmail/sample-dependency",
-	"dmail/shared-config"
+	"dmail/sample-dependency"
 ]
 const createGitCloneCommands = ({ repositories = defaultRepositories } = {}) => {
-	const command = "git.exe"
+	const name = "git"
 	const args = ["clone"]
 	const commands = repositories.map(repository =>
 		createCommand({
-			command,
-			args: [...args, `git@github.com:${repository}.git`],
+			name,
+			windowsExtension: "exe",
+			args: [
+				...args,
+				`git@github.com:${repository}.git`
+				// no need to pass a folder name, git clone is smart and create an appropriate folder name ;)
+				// `./${path.basename(repository)}`,
+			],
 			cwd: getPackagesFolder()
 		})
 	)

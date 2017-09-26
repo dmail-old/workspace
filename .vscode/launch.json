@@ -6,6 +6,8 @@
 			"request": "launch",
 			"name": "Launch with node",
 			"program": "${file}"
+			// we'll need this
+			// https://github.com/Microsoft/vscode/issues/19750#issuecomment-331236848
 		}
 	]
 }
