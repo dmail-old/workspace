@@ -11,14 +11,15 @@
 			"name": "Launch from dist",
 			"type": "node",
 			"request": "launch",
-			"preLaunchTask": "npm run compile", // ensure dist is fresh (compile before running)
-			"program": "${workspaceRoot}/runFromDist.js",
+			"preLaunchTask": "compile", // ensure dist is fresh (compile before running)
+			"program": "${workspaceRoot}/.vscode/runFromDist.js",
 			"args": ["${file}"],
 			"cwd": "${workspaceRoot}",
 			"env": {
 				"NODE_ENV": "development",
 				"NODE_PATH": "${workspaceRoot}/dist"
 			},
+			"sourceMaps": true,
 			"skipFiles": ["node_modules/**"]
 		},
 		{

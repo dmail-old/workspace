@@ -27,8 +27,9 @@
 		"rimraf": "^2.6.2"
 	},
 	"scripts": {
-		"compile": "babel . --out-dir dist --ignore=node_modules,dist",
-		"watch": "babel . --watch --out-dir dist --ignore=node_modules,dist",
+		"compile": "babel . --out-dir dist --ignore=node_modules,dist --source-maps",
+		"watch": "babel . --watch --out-dir dist --ignore=node_modules,dist --source-maps",
+		"build": "npm run compile",
 		"clean": "rimraf dist",
 		"dist": "npm run clean && npm run compile",
 		"prepublishOnly": "npm run dist",
