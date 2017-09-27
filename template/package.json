@@ -36,7 +36,8 @@
 		"prepublishOnly": "npm run dist",
 		"eslint": "eslint .",
 		"prettiest": "prettiest",
+		"pretest": "npm run eslint && npm run prettiest && npm run compile",
 		"test": "test",
-		"pretest": "npm run eslint && npm run prettiest && npm run compile"
+		"test-list": "test-list"
 	}
 }
