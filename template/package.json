@@ -18,14 +18,16 @@
 		"@dmail/command": "*",
 		"@dmail/prettiest": "*",
 		"@dmail/test": "*",
-		"babel-cli": "^7.0.0-beta.0",
-		"babel-core": "^7.0.0-beta.0",
-		"babel-eslint": "^8.0.0",
-		"babel-preset-env": "^2.0.0-beta.0",
-		"eslint": "^3.19.0",
-		"eslint-plugin-import": "^2.7.0",
-		"prettier": "^1.7.0",
-		"rimraf": "^2.6.2"
+		"babel-cli": "7.0.0-beta.0",
+		"babel-core": "7.0.0-beta.0",
+		"babel-eslint": "8.0.0",
+		"babel-preset-env": "2.0.0-beta.0",
+		"codecov": "2.3.0",
+		"eslint": "3.19.0",
+		"eslint-plugin-import": "2.7.0",
+		"nyc": "11.2.1",
+		"prettier": "1.7.0",
+		"rimraf": "2.6.2"
 	},
 	"scripts": {
 		"compile": "babel . --out-dir dist --ignore=node_modules,dist --source-maps",
@@ -36,8 +38,14 @@
 		"prepublishOnly": "npm run dist",
 		"eslint": "eslint .",
 		"prettiest": "prettiest",
-		"pretest": "npm run eslint && npm run prettiest && npm run compile",
-		"test": "test",
-		"test-list": "test-list"
+		"before-test": "npm run eslint && npm run prettiest && npm run compile",
+		"test-run": "test-run",
+		"test-list": "test-list",
+		"test": "npm run before-test && npm run test-run",
+		"test-with-coverage": "nyc npm test",
+		"coverage-report": "nyc report --reporter=text-lcov > coverage.lcov",
+		"coverage-upload":
+			"npm run coverage-report && codecov --token=823ba31e-8d6b-45d5-8a79-20dc330c720c",
+		"coverage-clean": "rimraf .nyc_output && rimraf coverage && rimraf coverage.lcov"
 	}
 }
