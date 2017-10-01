@@ -35,6 +35,8 @@
 		"build": "npm run compile",
 		"clean": "rimraf dist",
 		"dist": "npm run clean && npm run compile",
+		"reset": "npm run clean && npm run coverage-clean && rimraf node_modules",
+		"reinstall": "npm run reset && npm install",
 		"prepublishOnly": "npm run dist",
 		"eslint": "eslint .",
 		"prettiest": "prettiest",
