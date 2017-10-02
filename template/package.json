@@ -30,24 +30,29 @@
 		"rimraf": "2.6.2"
 	},
 	"scripts": {
-		"compile": "babel . --out-dir dist --ignore=node_modules,dist --source-maps",
-		"watch": "babel . --watch --out-dir dist --ignore=node_modules,dist --source-maps",
-		"build": "npm run compile",
-		"clean": "rimraf dist",
-		"dist": "npm run clean && npm run compile",
-		"reset": "npm run clean && npm run coverage-clean && rimraf node_modules",
-		"reinstall": "npm run reset && npm install",
-		"prepublishOnly": "npm run dist",
-		"eslint": "eslint .",
-		"prettiest": "prettiest",
-		"before-test": "npm run eslint && npm run prettiest && npm run compile",
-		"test-run": "test-run",
+		"code-compile": "babel . --out-dir dist --ignore=node_modules,dist --source-maps",
+		"code-clean": "rimraf dist",
+		"code-build": "npm run code-clean && npm run code-compile",
+		"code-watch": "babel . --watch --out-dir dist --ignore=node_modules,dist --source-maps",
+		"code-lint": "eslint .",
+		"code-format": "prettiest",
+
 		"test-list": "test-list",
-		"test": "npm run before-test && npm run test-run",
-		"test-with-coverage": "nyc npm test",
-		"coverage-report": "nyc report --reporter=text-lcov > coverage.lcov",
-		"coverage-upload":
-			"npm run coverage-report && codecov --token=823ba31e-8d6b-45d5-8a79-20dc330c720c",
-		"coverage-clean": "rimraf .nyc_output && rimraf coverage && rimraf coverage.lcov"
+		"test-before": "npm run code-lint && npm run code-format && npm run code-compile",
+		"test-run": "test-run",
+		"test": "npm run test-before && npm run test-run",
+		"test-cover": "npm run test-before && nyc npm run test-run",
+		"test-cover-clean": "rimraf .nyc_output && rimraf coverage && rimraf coverage.lcov",
+		"test-cover-html": "nyc report --reporter=lcov",
+		"test-cover-lcov": "nyc report --reporter=text-lcov > coverage.lcov",
+		"test-cover-upload":
+			"npm run test-cover-lcov && codecov --token=823ba31e-8d6b-45d5-8a79-20dc330c720c",
+
+		"repo-reset": "npm run code-clean && npm run test-cover-clean && rimraf node_modules",
+		"repo-reinstall": "npm run repo-reset && npm install",
+
+		"build": "npm run code-compile",
+		"prepublishOnly": "npm run dist",
+		"reinstall": "npm run repo-reinstall"
 	}
 }
