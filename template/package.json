@@ -12,6 +12,9 @@
 	"main": "dist/index.js",
 	"module": "index.js",
 	"files": ["dist", "src"],
+	"engines": {
+		"node": ">=8.6.0"
+	},
 	"dependencies": {},
 	"devDependencies": {
 		"@dmail/shared-config": "*",
@@ -45,8 +48,7 @@
 		"test-cover-clean": "rimraf .nyc_output && rimraf coverage && rimraf coverage.lcov",
 		"test-cover-html": "nyc report --reporter=lcov",
 		"test-cover-lcov": "nyc report --reporter=text-lcov > coverage.lcov",
-		"test-cover-upload":
-			"npm run test-cover-lcov && codecov --token=823ba31e-8d6b-45d5-8a79-20dc330c720c",
+		"test-cover-upload": "npm run test-cover-lcov && codecov --token=CHANGE_ME",
 
 		"repo-reset": "npm run code-clean && npm run test-cover-clean && rimraf node_modules",
 		"repo-reinstall": "npm run repo-reset && npm install",
