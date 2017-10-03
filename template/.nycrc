@@ -1,9 +1,7 @@
 {
-  "sourceMap": false,
-  "instrument": false,
   "include": [
     "dist/index.js",
-    "dist/**/*"
+    "dist/**"
   ],
   "exclude": [
     "dist/**/*.test.*"
