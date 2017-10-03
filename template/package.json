@@ -17,9 +17,9 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@dmail/shared-config": "*",
 		"@dmail/command": "*",
 		"@dmail/prettiest": "*",
+		"@dmail/shared-config": "*",
 		"@dmail/test": "*",
 		"babel-cli": "7.0.0-beta.0",
 		"babel-core": "7.0.0-beta.0",
