@@ -1,7 +1,7 @@
 {
 	"name": "template",
 	"version": "0.0.1",
-	"licence": "MIT",
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/dmail/template"
