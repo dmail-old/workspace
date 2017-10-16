@@ -53,9 +53,9 @@
 		"repo-reset": "npm run code-clean && npm run test-cover-clean && rimraf node_modules",
 		"repo-reinstall": "npm run repo-reset && npm install",
 
-		"build": "npm run code-compile",
+		"build": "npm run code-build",
 		"compile": "npm run code-compile",
-		"prepublishOnly": "npm run dist",
+		"prepublishOnly": "npm run build",
 		"reinstall": "npm run repo-reinstall"
 	}
 }
