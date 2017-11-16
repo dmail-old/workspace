@@ -1,3 +1,20 @@
 {
-  "editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"git.confirmSync": false,
+	"window.zoomLevel": 0,
+	"editor.tabSize": 2,
+	"editor.minimap.enabled": true,
+	"editor.minimap.renderCharacters": false,
+	"editor.trimAutoWhitespace": true,
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"files.associations": {
+		"*.jsx": "javascriptreact"
+	},
+	"workbench.iconTheme": "vs-seti",
+	"window.nativeTabs": true,
+	"editor.autoIndent": true,
+	"git.enableSmartCommit": true,
+	"path-intellisense.extensionOnImport": true,
+	"workbench.panel.location": "bottom"
 }
